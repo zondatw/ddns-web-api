@@ -1,8 +1,14 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
+// This struct represents state
+struct AppState {
+    app_name: String,
+}
+
 #[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+async fn index(data: web::Data<AppState>) -> String {
+    let app_name = &data.app_name; // <- get app_name
+    format!("Hello {app_name}!") // <- response with app_name
 }
 
 #[post("/echo")]
@@ -18,7 +24,10 @@ async fn manual_hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(hello)
+            .app_data(web::Data::new(AppState {
+                app_name: String::from("Actix Web"),
+            }))
+            .service(index)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
     })
