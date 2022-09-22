@@ -1,6 +1,9 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use std::sync::Mutex;
 
+mod handlers;
+use crate::handlers::handler_ddns_set;
+
 mod constants;
 use crate::constants::AppState;
 
@@ -47,6 +50,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .route("/count", web::get().to(counting))
             .service(echo)
+            .service(handler_ddns_set)
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
