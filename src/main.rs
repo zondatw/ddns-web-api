@@ -1,10 +1,8 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use std::sync::Mutex;
 
-// This struct represents state
-struct AppState {
-    app_name: String,
-}
+mod constants;
+use crate::constants::AppState;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
