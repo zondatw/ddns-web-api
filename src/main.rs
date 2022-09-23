@@ -5,7 +5,7 @@ mod handlers;
 use crate::handlers::handler_ddns_set;
 
 mod constants;
-use crate::constants::AppState;
+use crate::constants::{AppState, DNSState};
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
@@ -45,6 +45,9 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(AppState {
                 app_name: String::from("Actix Web"),
+            }))
+            .app_data(web::Data::new(DNSState {
+                dns_key: String::from("XXXXXXXXXXXXXX"),
             }))
             .app_data(counter.clone()) // <- register the created data
             .service(index)
