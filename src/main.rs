@@ -1,4 +1,4 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, middleware::Logger};
 use std::sync::Mutex;
 use dotenv::dotenv;
 
@@ -40,6 +40,9 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     let dns_key = std::env::var("DNS_KEY").expect("DNS_KEY must be set.");
 
+    std::env::set_var("RUST_LOG", "actix_web=info");
+    env_logger::init();
+
     // Note: web::Data created _outside_ HttpServer::new closure
     let counter = web::Data::new(AppStateWithCounter {
         counter: Mutex::new(0),
@@ -48,6 +51,8 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         App::new()
+            .wrap(Logger::default())
+            .wrap(Logger::new("%a %{User-Agent}i"))
             .app_data(web::Data::new(AppState {
                 app_name: String::from("Actix Web"),
             }))
