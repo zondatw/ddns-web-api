@@ -1,5 +1,7 @@
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use std::sync::Mutex;
+use dotenv::dotenv;
+
 
 mod handlers;
 use crate::handlers::handler_ddns_set;
@@ -35,6 +37,9 @@ async fn manual_hello() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+    dotenv().ok();
+    let dns_key = std::env::var("DNS_KEY").expect("DNS_KEY must be set.");
+
     // Note: web::Data created _outside_ HttpServer::new closure
     let counter = web::Data::new(AppStateWithCounter {
         counter: Mutex::new(0),
@@ -47,7 +52,7 @@ async fn main() -> std::io::Result<()> {
                 app_name: String::from("Actix Web"),
             }))
             .app_data(web::Data::new(DNSState {
-                dns_key: String::from("XXXXXXXXXXXXXX"),
+                dns_key: dns_key.clone(),
             }))
             .app_data(counter.clone()) // <- register the created data
             .service(index)
