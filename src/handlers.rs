@@ -4,11 +4,11 @@ use serde::Serialize;
 use crate::constants::DNSState;
 
 #[derive(Serialize)]
-struct DDNSSerializer {
+struct DDNSResponseSerializer {
     dns_key: String,
 }
 
-impl Responder for DDNSSerializer {
+impl Responder for DDNSResponseSerializer {
     type Body = BoxBody;
 
     fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
@@ -24,7 +24,7 @@ impl Responder for DDNSSerializer {
 pub async fn handler_ddns_set(data: web::Data<DNSState>) -> impl Responder {
     let dns_key = &data.dns_key;
 
-    DDNSSerializer {
+    DDNSResponseSerializer {
         dns_key: dns_key.clone()
     }
 }
