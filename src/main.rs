@@ -1,13 +1,13 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, middleware::Logger};
-use std::sync::Mutex;
+use actix_web::{get, middleware::Logger, post, web, App, HttpResponse, HttpServer, Responder};
 use dotenv::dotenv;
+use std::sync::Mutex;
 
-mod handlers;
 mod constants;
+mod handlers;
 mod serializers;
 
-use crate::handlers::handler_ddns_set;
 use crate::constants::{AppState, DNSState};
+use crate::handlers::handler_ddns_set;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
@@ -47,7 +47,6 @@ async fn main() -> std::io::Result<()> {
     let counter = web::Data::new(AppStateWithCounter {
         counter: Mutex::new(0),
     });
-
 
     HttpServer::new(move || {
         App::new()

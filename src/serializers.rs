@@ -1,5 +1,5 @@
-use actix_web::{ body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
-use serde::{Serialize, Deserialize};
+use actix_web::{body::BoxBody, http::header::ContentType, HttpRequest, HttpResponse, Responder};
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize)]
 pub struct DDNSRequestSerializer {
