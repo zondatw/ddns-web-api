@@ -1,7 +1,14 @@
 use actix_web::{ body::BoxBody, http::header::ContentType, post, web, HttpRequest, HttpResponse, Responder};
-use serde::Serialize;
+use serde::{Serialize, Deserialize};
+use log;
 
 use crate::constants::DNSState;
+
+#[derive(Deserialize)]
+struct DDNSRequestSerializer {
+    subdomain: String,
+    ip: String,
+}
 
 #[derive(Serialize)]
 struct DDNSResponseSerializer {
@@ -21,8 +28,9 @@ impl Responder for DDNSResponseSerializer {
 }
 
 #[post("/ddns")]
-pub async fn handler_ddns_set(data: web::Data<DNSState>) -> impl Responder {
+pub async fn handler_ddns_set(data: web::Data<DNSState>, req: web::Json<DDNSRequestSerializer>) -> impl Responder {
     let dns_key = &data.dns_key;
+    println!("DDNS subdomain: {}, ip: {}", req.subdomain, req.ip);
 
     DDNSResponseSerializer {
         dns_key: dns_key.clone()
