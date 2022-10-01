@@ -11,5 +11,5 @@ Create `.env` file and set value which you want, you can reference `.env.example
 #### Post
 
 ```shell
-curl -v -X POST "http://127.0.0.1:8080/ddns" -H 'Content-Type: application/json' -d '{"subdomain": "test", "ip": "123.123.123.123"}'
+curl -v -X POST "http://127.0.0.1:8080/api/ddns" -H 'Content-Type: application/json' -d '{"subdomain": "test", "ip": "123.123.123.123"}
 ```
