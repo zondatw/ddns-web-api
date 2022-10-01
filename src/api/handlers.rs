@@ -1,6 +1,6 @@
 use actix_web::{post, web, Responder};
 
-use crate::constants::DNSState;
+use crate::core::constants::DNSState;
 use crate::api::serializers::{DDNSRequestSerializer, DDNSResponseSerializer};
 
 #[post("/ddns")]

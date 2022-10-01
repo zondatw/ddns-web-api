@@ -2,10 +2,10 @@ use actix_web::{get, middleware::Logger, post, web, App, HttpResponse, HttpServe
 use dotenv::dotenv;
 use std::sync::Mutex;
 
-mod constants;
+mod core;
 mod api;
 
-use crate::constants::{AppState, DNSState};
+use crate::core::constants::{AppState, DNSState};
 use crate::api::handlers::handler_ddns_set;
 
 #[get("/")]
