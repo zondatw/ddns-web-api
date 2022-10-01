@@ -6,7 +6,7 @@ mod core;
 mod api;
 
 use crate::core::constants::{AppState, DNSState};
-use crate::api::handlers::handler_ddns_set;
+use crate::api::ddns::handlers::handler_ddns_set;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
