@@ -1,10 +1,10 @@
 use actix_web::{middleware::Logger, web, App, HttpServer};
 use dotenv::dotenv;
 
-mod core;
 mod api;
+mod core;
 
-use crate::core::constants::{DNSState};
+use crate::core::constants::DNSState;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
