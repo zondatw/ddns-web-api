@@ -3,11 +3,10 @@ use dotenv::dotenv;
 use std::sync::Mutex;
 
 mod constants;
-mod handlers;
-mod serializers;
+mod api;
 
 use crate::constants::{AppState, DNSState};
-use crate::handlers::handler_ddns_set;
+use crate::api::handlers::handler_ddns_set;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
