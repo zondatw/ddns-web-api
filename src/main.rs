@@ -6,7 +6,7 @@ mod core;
 mod api;
 
 use crate::core::constants::{AppState, DNSState};
-use crate::api::ddns::handlers::handler_ddns_set;
+use crate::api::routes::ddns_config;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
@@ -32,13 +32,6 @@ async fn echo(req_body: String) -> impl Responder {
 
 async fn manual_hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there!")
-}
-
-fn ddns_config(cfg: &mut web::ServiceConfig) {
-    cfg.service(
-        web::resource("/ddns")
-            .route(web::post().to(handler_ddns_set))
-    );
 }
 
 #[actix_web::main]
