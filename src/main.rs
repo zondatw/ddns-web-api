@@ -6,7 +6,6 @@ mod core;
 mod api;
 
 use crate::core::constants::{AppState, DNSState};
-use crate::api::routes::ddns_config;
 
 #[get("/")]
 async fn index(data: web::Data<AppState>) -> String {
@@ -61,7 +60,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .route("/count", web::get().to(counting))
             .service(echo)
-            .configure(ddns_config)
+            .configure(api::routes::config)
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
