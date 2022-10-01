@@ -34,6 +34,13 @@ async fn manual_hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there!")
 }
 
+fn ddns_config(cfg: &mut web::ServiceConfig) {
+    cfg.service(
+        web::resource("/ddns")
+            .route(web::post().to(handler_ddns_set))
+    );
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -61,7 +68,7 @@ async fn main() -> std::io::Result<()> {
             .service(index)
             .route("/count", web::get().to(counting))
             .service(echo)
-            .service(handler_ddns_set)
+            .configure(ddns_config)
             .route("/hey", web::get().to(manual_hello))
     })
     .bind(("127.0.0.1", 8080))?
