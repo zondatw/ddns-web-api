@@ -1,16 +1,14 @@
 use actix_web::{middleware::Logger, web, App, HttpServer};
-use dotenv::dotenv;
 
 mod api;
+mod config;
 mod core;
 
 use crate::core::constants::DNSState;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    dotenv().ok();
-    let dns_key = std::env::var("DNS_KEY").expect("DNS_KEY must be set.");
-
+    config::base::init();
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
 
@@ -19,7 +17,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .wrap(Logger::new("%a %{User-Agent}i"))
             .app_data(web::Data::new(DNSState {
-                dns_key: dns_key.clone(),
+                dns_key: (*config::base::dns_key().lock().unwrap()).clone(),
             }))
             .configure(api::routes::config)
     })

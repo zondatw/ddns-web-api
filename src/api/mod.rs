@@ -1,2 +1,3 @@
-pub mod ddns;
 pub mod routes;
+
+mod ddns;
