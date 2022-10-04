@@ -1,7 +1,7 @@
 use actix_web::{web, Responder};
 
 use super::serializers::{DDNSRequestSerializer, DDNSResponseSerializer};
-use crate::core::constants::DNSState;
+use crate::api::constants::DNSState;
 
 pub async fn handler_ddns_set(
     data: web::Data<DNSState>,
