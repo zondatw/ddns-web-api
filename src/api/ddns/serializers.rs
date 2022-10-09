@@ -9,7 +9,8 @@ pub struct DDNSRequestSerializer {
 
 #[derive(Serialize)]
 pub struct DDNSResponseSerializer {
-    pub dns_key: String,
+    pub subdomain: String,
+    pub ip: String,
 }
 
 impl Responder for DDNSResponseSerializer {
