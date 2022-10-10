@@ -44,9 +44,9 @@ impl error::ResponseError for ErrorResponder {
 
     fn status_code(&self) -> StatusCode {
         match *self {
-            ErrorResponder::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
-            ErrorResponder::BadClientData => StatusCode::BAD_REQUEST,
-            ErrorResponder::Timeout => StatusCode::GATEWAY_TIMEOUT,
+            Self::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
+            Self::BadClientData => StatusCode::BAD_REQUEST,
+            Self::Timeout => StatusCode::GATEWAY_TIMEOUT,
         }
     }
 }
