@@ -3,14 +3,14 @@ use derive_more::{Display, Error};
 use serde::Serialize;
 
 #[derive(Serialize)]
-struct ErrorResponse {
+struct ErrorSerializer {
     code: u16,
     error: String,
     message: String,
 }
 
 #[derive(Debug, Display, Error)]
-pub enum ErrorSerializer {
+pub enum ErrorResponder {
     #[display(fmt = "internal error")]
     InternalError,
 
@@ -21,7 +21,7 @@ pub enum ErrorSerializer {
     Timeout,
 }
 
-impl ErrorSerializer {
+impl ErrorResponder {
     pub fn name(&self) -> String {
         match self {
             Self::InternalError => "Internel Error".to_string(),
@@ -31,10 +31,10 @@ impl ErrorSerializer {
     }
 }
 
-impl error::ResponseError for ErrorSerializer {
+impl error::ResponseError for ErrorResponder {
     fn error_response(&self) -> HttpResponse {
         let status_code = self.status_code();
-        let error_response = ErrorResponse {
+        let error_response = ErrorSerializer {
             code: status_code.as_u16(),
             message: self.to_string(),
             error: self.name(),
@@ -44,9 +44,9 @@ impl error::ResponseError for ErrorSerializer {
 
     fn status_code(&self) -> StatusCode {
         match *self {
-            ErrorSerializer::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
-            ErrorSerializer::BadClientData => StatusCode::BAD_REQUEST,
-            ErrorSerializer::Timeout => StatusCode::GATEWAY_TIMEOUT,
+            ErrorResponder::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
+            ErrorResponder::BadClientData => StatusCode::BAD_REQUEST,
+            ErrorResponder::Timeout => StatusCode::GATEWAY_TIMEOUT,
         }
     }
 }
