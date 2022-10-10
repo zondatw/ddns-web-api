@@ -362,6 +362,7 @@ name = "ddns-web-api"
 version = "0.1.0"
 dependencies = [
  "actix-web",
+ "derive_more",
  "dotenv",
  "env_logger",
  "serde",
