@@ -10,9 +10,10 @@ pub async fn handler_ddns_set(
     req: web::Json<DDNSRequestSerializer>,
 ) -> Result<impl Responder, ErrorResponder> {
     let dns_key = &data.dns_key;
+    let dns_server = &data.dns_server;
     println!(
-        "DDNS subdomain: {}, ip: {}, dns_key: {}",
-        req.subdomain, req.ip, dns_key
+        "DDNS subdomain: {}, ip: {}, dns_key: {}, dns_server: {}",
+        req.subdomain, req.ip, dns_key, dns_server
     );
     let output = Command::new("echo")
         .arg(req.subdomain.clone())
