@@ -23,9 +23,12 @@ macro_rules! config_key_wrapper {
 
 config_key_wrapper!(DNS_KEY, dns_key);
 config_key_wrapper!(DNS_SERVER, dns_server);
+config_key_wrapper!(DNS_BASE_DOMAIN, dns_base_domain);
 
 pub fn init() {
     dotenv().ok();
     *dns_key().lock().unwrap() = std::env::var("DNS_KEY").expect("DNS_KEY must be set.");
     *dns_server().lock().unwrap() = std::env::var("DNS_SERVER").expect("DNS_SERVER must be set.");
+    *dns_base_domain().lock().unwrap() =
+        std::env::var("DNS_BASE_DOMAIN").expect("DNS_BASE_DOMAIN must be set.");
 }
