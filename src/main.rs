@@ -9,6 +9,8 @@ async fn main() -> std::io::Result<()> {
     config::base::init();
     std::env::set_var("RUST_LOG", "actix_web=info");
     env_logger::init();
+    let server_domain = (*config::base::server_domain().lock().unwrap()).clone();
+    let server_port = *config::base::server_port().lock().unwrap();
 
     HttpServer::new(move || {
         App::new()
@@ -16,7 +18,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::new("%a %{User-Agent}i"))
             .configure(core::routes::config)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((server_domain, server_port))?
     .run()
     .await
 }
