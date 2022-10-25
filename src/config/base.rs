@@ -4,12 +4,12 @@ use std::borrow::BorrowMut;
 use std::sync::{Mutex, Once};
 
 macro_rules! config_key_wrapper {
-    ($name:ident, $variable_name:ident, $typ:ty) => {
+    ($name:ident, $typ:ty) => {
         paste! {
             static mut [<STD_ONCE_ $name>]: Option<Mutex<$typ>> = None;
             static [<$name _INIT>]: Once = Once::new();
 
-            pub fn $variable_name<'a>() -> &'a Mutex<$typ> {
+            pub fn [<$name:lower>]<'a>() -> &'a Mutex<$typ> {
                 [<$name _INIT>].call_once(|| unsafe {
                     *[<STD_ONCE_ $name>].borrow_mut() = Some(Mutex::new(
                         std::env::var(stringify!($name)).expect(format!("{:?} must be set.", stringify!($name)).as_str())
@@ -23,11 +23,11 @@ macro_rules! config_key_wrapper {
     };
 }
 
-config_key_wrapper!(SERVER_DOMAIN, server_domain, String);
-config_key_wrapper!(SERVER_PORT, server_port, u16);
-config_key_wrapper!(DNS_KEY, dns_key, String);
-config_key_wrapper!(DNS_SERVER, dns_server, String);
-config_key_wrapper!(DNS_BASE_DOMAIN, dns_base_domain, String);
+config_key_wrapper!(SERVER_DOMAIN, String);
+config_key_wrapper!(SERVER_PORT, u16);
+config_key_wrapper!(DNS_KEY, String);
+config_key_wrapper!(DNS_SERVER, String);
+config_key_wrapper!(DNS_BASE_DOMAIN, String);
 
 pub fn init() {
     dotenv().ok();
