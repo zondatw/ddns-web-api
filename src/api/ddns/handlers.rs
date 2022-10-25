@@ -25,7 +25,7 @@ pub async fn handler_ddns_set(
         .spawn().unwrap();
 
     if let Some(echo_output) = echo_output_child.stdout.take() {
-        let mut grep_output_child = Command::new("nsupdate")
+        let grep_output_child = Command::new("nsupdate")
             .arg("-y")
             .arg(dns_key.clone())
             .stdin(echo_output)
